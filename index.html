@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lì Xì Tết 2026 🧧</title>
+  <style>
+    /* ===== CONFIGURABLE: chỉnh màu sắc tại đây ===== */
+    :root {
+      --red:        #c0392b;
+      --red-dark:   #96281b;
+      --gold:       #f4d03f;
+      --gold-dark:  #d4ac0d;
+      --gold-light: #fef9e7;
+      --white:      #fff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(ellipse at top, #e74c3c 0%, #922b21 60%, #641e16 100%);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ---------- floating lanterns ---------- */
+    .lanterns {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .lantern {
+      position: absolute;
+      font-size: 2rem;
+      animation: sway 4s ease-in-out infinite alternate;
+      opacity: .55;
+    }
+    @keyframes sway {
+      from { transform: rotate(-8deg) translateY(0); }
+      to   { transform: rotate( 8deg) translateY(-12px); }
+    }
+
+    /* ---------- main card ---------- */
+    .card {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 3rem 2.5rem 2.5rem;
+      width: min(92vw, 420px);
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: var(--gold);
+      text-shadow: 0 2px 8px rgba(0,0,0,.4);
+      letter-spacing: 2px;
+      margin-bottom: .3rem;
+    }
+    .subtitle {
+      color: rgba(255,255,255,.7);
+      font-size: .9rem;
+      margin-bottom: 2.2rem;
+      letter-spacing: 1px;
+    }
+
+    /* ---------- envelope ---------- */
+    .envelope-wrap {
+      position: relative;
+      width: 180px;
+      height: 220px;
+      margin: 0 auto 2rem;
+      cursor: pointer;
+      perspective: 600px;
+    }
+    .envelope {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform .8s cubic-bezier(.4,2,.6,1);
+    }
+    .envelope-wrap.open .envelope { transform: rotateY(360deg) scale(1.08); }
+
+    /* envelope body */
+    .env-body {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, #e74c3c 30%, #c0392b 100%);
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.5);
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* gold pattern overlay */
+    .env-body::before {
+      content: '';
+      position: absolute; inset: 8px;
+      border: 2px solid rgba(244,208,63,.35);
+      border-radius: 12px;
+    }
+    .env-icon { font-size: 4rem; }
+
+    /* envelope flap top */
+    .env-flap {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 55%;
+      background: linear-gradient(175deg, #c0392b 40%, #e74c3c);
+      border-radius: 18px 18px 0 0;
+      clip-path: polygon(0 0, 100% 0, 50% 85%);
+      transform-origin: top center;
+      transition: transform .6s ease;
+      z-index: 2;
+    }
+    .envelope-wrap.open .env-flap { transform: rotateX(-150deg); }
+
+    /* gold diamond */
+    .env-diamond {
+      position: absolute;
+      top: 22%; left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      width: 38px; height: 38px;
+      background: var(--gold);
+      border-radius: 4px;
+      z-index: 3;
+      box-shadow: 0 0 12px rgba(244,208,63,.7);
+    }
+    .env-diamond::after {
+      content: '福';
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      transform: rotate(-45deg);
+      font-size: 1.1rem;
+      color: var(--red-dark);
+      font-weight: 700;
+    }
+
+    /* ---------- result ---------- */
+    .result-area {
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+    }
+    .amount {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(244,208,63,.5), 0 2px 4px rgba(0,0,0,.4);
+      opacity: 0;
+      transform: scale(.5);
+      transition: opacity .5s ease, transform .5s cubic-bezier(.4,2,.5,1);
+    }
+    .amount.show { opacity: 1; transform: scale(1); }
+    .msg {
+      font-size: 1rem;
+      color: rgba(255,255,255,.8);
+      opacity: 0;
+      transition: opacity .4s .2s;
+    }
+    .msg.show { opacity: 1; }
+
+    /* ---------- button ---------- */
+    .btn-lixi {
+      margin-top: 1.8rem;
+      padding: .85rem 2.8rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--red-dark);
+      background: linear-gradient(135deg, var(--gold) 0%, #e5b80b 100%);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,.3), 0 0 0 3px rgba(244,208,63,.3);
+      transition: transform .15s, box-shadow .15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-lixi::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0);
+      transition: background .2s;
+    }
+    .btn-lixi:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,.35), 0 0 0 4px rgba(244,208,63,.4); }
+    .btn-lixi:active { transform: translateY(0); }
+    .btn-lixi:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    /* ---------- settings panel ---------- */
+    details {
+      margin-top: 2rem;
+      color: rgba(255,255,255,.75);
+      font-size: .85rem;
+      text-align: left;
+      background: rgba(0,0,0,.2);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      padding: .8rem 1rem;
+      width: 100%;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--gold);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      user-select: none;
+    }
+    summary::before { content: '⚙️'; font-size: 1rem; }
+    .settings-body { margin-top: .9rem; }
+    .settings-body label { display: block; margin-bottom: .3rem; color: rgba(255,255,255,.7); }
+    .settings-body textarea {
+      width: 100%;
+      background: rgba(0,0,0,.3);
+      color: var(--gold);
+      border: 1px solid rgba(244,208,63,.3);
+      border-radius: 8px;
+      padding: .5rem .7rem;
+      font-size: .85rem;
+      font-family: monospace;
+      resize: vertical;
+      min-height: 80px;
+    }
+    .settings-body textarea:focus { outline: none; border-color: var(--gold); }
+    .btn-save {
+      margin-top: .6rem;
+      padding: .4rem 1.2rem;
+      background: var(--gold);
+      color: var(--red-dark);
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: .85rem;
+    }
+    .btn-save:hover { background: #f0c315; }
+    .save-msg { color: #2ecc71; font-size: .8rem; margin-left: .5rem; display: none; }
+
+    /* ---------- confetti ---------- */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating lanterns -->
+<div class="lanterns" id="lanterns"></div>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="card">
+  <h1>🧧 Lì Xì Tết 2026</h1>
+  <p class="subtitle">Chúc mừng năm mới — Bính Ngọ 🐎</p>
+
+  <!-- Envelope -->
+  <div class="envelope-wrap" id="envelopeWrap">
+    <div class="envelope">
+      <div class="env-body">
+        <span class="env-icon">🧧</span>
+      </div>
+      <div class="env-flap"></div>
+      <div class="env-diamond"></div>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div class="result-area">
+    <div class="amount" id="amount"></div>
+    <div class="msg"   id="msg"></div>
+  </div>
+
+  <!-- Main button -->
+  <button class="btn-lixi" id="btnLixi" onclick="getLixi()">🎁 Nhận Lì Xì</button>
+
+  <!-- Settings -->
+  <details id="settingsPanel">
+    <summary>Chỉnh mệnh giá</summary>
+    <div class="settings-body">
+      <label>Danh sách mệnh giá (mỗi giá trị 1 dòng, đơn vị VNĐ):</label>
+      <textarea id="denominationsInput"></textarea>
+      <button class="btn-save" onclick="saveDenominations()">Lưu</button>
+      <span class="save-msg" id="saveMsg">✓ Đã lưu!</span>
+    </div>
+  </details>
+</div>
+
+<script>
+  /* =========================================================
+     CONFIGURABLE — chỉnh mệnh giá mặc định tại đây
+     ========================================================= */
+  const DEFAULT_DENOMINATIONS = [
+    10000,
+    20000,
+    50000,
+    100000,
+    200000,
+    500000,
+    1000000,
+    2000000,
+  ];
+
+  /* =========================================================
+     Chúc mừng tuỳ theo mệnh giá
+     ========================================================= */
+  function getWish(amount) {
+    if (amount >= 1000000) return '🎉 Năm mới phát tài, vạn sự như ý!';
+    if (amount >= 500000)  return '🌟 Chúc mừng! Năm mới sung túc!';
+    if (amount >= 100000)  return '🌺 An khang thịnh vượng!';
+    return '🍀 Năm mới vui vẻ, may mắn!';
+  }
+
+  /* =========================================================
+     Format VNĐ
+     ========================================================= */
+  function formatVND(n) {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(n);
+  }
+
+  /* =========================================================
+     Load / Save denominations (localStorage)
+     ========================================================= */
+  function loadDenominations() {
+    try {
+      const saved = localStorage.getItem('lixi_denominations');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return DEFAULT_DENOMINATIONS;
+  }
+
+  function saveDenominations() {
+    const raw = document.getElementById('denominationsInput').value;
+    const values = raw
+      .split('\n')
+      .map(s => parseInt(s.replace(/\D/g, ''), 10))
+      .filter(n => !isNaN(n) && n > 0);
+
+    if (values.length === 0) { alert('Vui lòng nhập ít nhất 1 mệnh giá hợp lệ.'); return; }
+    localStorage.setItem('lixi_denominations', JSON.stringify(values));
+
+    const msg = document.getElementById('saveMsg');
+    msg.style.display = 'inline';
+    setTimeout(() => (msg.style.display = 'none'), 2000);
+  }
+
+  function initSettings() {
+    const dens = loadDenominations();
+    document.getElementById('denominationsInput').value = dens.join('\n');
+  }
+
+  /* =========================================================
+     Main logic
+     ========================================================= */
+  let busy = false;
+
+  function getLixi() {
+    if (busy) return;
+    busy = true;
+
+    const btn = document.getElementById('btnLixi');
+    btn.disabled = true;
+
+    // reset result
+    const amountEl = document.getElementById('amount');
+    const msgEl    = document.getElementById('msg');
+    amountEl.classList.remove('show');
+    msgEl.classList.remove('show');
+
+    // animate envelope
+    const wrap = document.getElementById('envelopeWrap');
+    wrap.classList.remove('open');
+    void wrap.offsetWidth; // reflow
+    wrap.classList.add('open');
+
+    // pick random denomination
+    const dens   = loadDenominations();
+    const picked = dens[Math.floor(Math.random() * dens.length)];
+
+    // reveal after animation
+    setTimeout(() => {
+      amountEl.textContent = formatVND(picked);
+      msgEl.textContent    = getWish(picked);
+      amountEl.classList.add('show');
+      msgEl.classList.add('show');
+      launchConfetti();
+
+      setTimeout(() => {
+        btn.disabled = false;
+        busy = false;
+      }, 800);
+    }, 700);
+  }
+
+  /* =========================================================
+     Confetti
+     ========================================================= */
+  function launchConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx    = canvas.getContext('2d');
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const colors = ['#f4d03f','#e74c3c','#c0392b','#fff','#f39c12','#e67e22'];
+    const pieces = Array.from({ length: 120 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * -canvas.height * .5,
+      r: Math.random() * 7 + 3,
+      d: Math.random() * 3 + 1,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      tilt: Math.random() * 10 - 5,
+      tiltAngle: 0,
+      tiltSpeed: Math.random() * .07 + .03,
+    }));
+
+    let frame, elapsed = 0;
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach(p => {
+        p.tiltAngle += p.tiltSpeed;
+        p.y += p.d + 1;
+        p.x += Math.sin(p.tiltAngle) * 1.5;
+        p.tilt = Math.sin(p.tiltAngle) * 12;
+        ctx.beginPath();
+        ctx.lineWidth = p.r;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+        ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+        ctx.stroke();
+      });
+      elapsed++;
+      if (elapsed < 130) frame = requestAnimationFrame(draw);
+      else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    cancelAnimationFrame(frame);
+    elapsed = 0;
+    draw();
+  }
+
+  /* =========================================================
+     Floating lanterns
+     ========================================================= */
+  function createLanterns() {
+    const container = document.getElementById('lanterns');
+    const icons = ['🏮','🧨','🌸','✨','🌟','🎋'];
+    for (let i = 0; i < 14; i++) {
+      const el = document.createElement('span');
+      el.className = 'lantern';
+      el.textContent = icons[i % icons.length];
+      el.style.left   = Math.random() * 95 + '%';
+      el.style.top    = Math.random() * 90 + '%';
+      el.style.fontSize = (Math.random() * 1.4 + 1) + 'rem';
+      el.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      el.style.animationDelay   = (Math.random() * 3) + 's';
+      container.appendChild(el);
+    }
+  }
+
+  /* =========================================================
+     Init
+     ========================================================= */
+  createLanterns();
+  initSettings();
+</script>
+</body>
+</html>
